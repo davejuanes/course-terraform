@@ -14,3 +14,14 @@ module "vpc" {
     Environment = "Dev"
   }
 }
+module "security-group" {
+  source              = "terraform-aws-modules/security-group/aws"
+  version             = "5.3.1"
+  name                = "Regla Https"
+  description         = "Security Group de Dave"
+  vpc_id              = module.vpc.vpc_id
+  ingress_cidr_blocks = ["0.0.0.0/0"]
+  ingress_rules       = ["https-443-tcp"]
+  egress_cidr_blocks  = ["0.0.0.0/0"]
+  egress_rules        = ["https-443-tcp"]
+}
