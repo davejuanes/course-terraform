@@ -13,7 +13,8 @@ provider "aws" {
 }
 
 locals {
-  Environment = "Dev"
+  Environment      = "Dev"
+  nombre_workspace = terraform.workspace
 }
 
 #data "aws_subnet" "default" {
@@ -21,9 +22,9 @@ locals {
 #}
 
 resource "aws_instance" "mi_servidor" {
-  for_each                    = var.nombres_servicios
-  ami                         = "ami-0b6d9d3d33ba97d99"
-  instance_type               = "t3.micro"
+  for_each      = var.nombres_servicios
+  ami           = "ami-0b6d9d3d33ba97d99"
+  instance_type = "t3.micro"
   # data.aws_subnet.default.id
   subnet_id                   = module.vpc.public_subnets[0] # "subnet-0dba02e7cfd16b7a1"
   vpc_security_group_ids      = [module.security-group.security_group_id]
@@ -36,15 +37,15 @@ resource "aws_instance" "mi_servidor" {
 }
 
 resource "aws_instance" "mi_servidor2" {
-  for_each                    = var.nombres_servicios_2
-  ami                         = "ami-0b6d9d3d33ba97d99"
-  instance_type               = "t3.micro"
+  count         = terraform.workspace == "produccione" ? 2 : 1
+  ami           = "ami-0b6d9d3d33ba97d99"
+  instance_type = "t3.micro"
   # data.aws_subnet.default.id
   subnet_id                   = module.vpc.public_subnets[1] # "subnet-0dba02e7cfd16b7a1"
   vpc_security_group_ids      = [module.security-group.security_group_id]
   associate_public_ip_address = true # Publica la IP privada
   tags = {
-    Name        = "ServidorTerraform-${each.key}"
+    Name        = format("%s-%s", terraform.workspace, count.index) # "${terraform.workspace}-${count.index}"
     Environment = local.Environment
     Owner       = "Dave"
   }
