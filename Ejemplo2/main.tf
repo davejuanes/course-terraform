@@ -15,6 +15,9 @@ provider "aws" {
 locals {
   Environment      = "Dev"
   nombre_workspace = terraform.workspace
+  ruta_private_key = "~/Downloads/EjemploAnsible.pem"
+  nombre_key       = "EjemploAnsible"
+  usuario_ssh      = "ubuntu"
 }
 
 #data "aws_subnet" "default" {
@@ -44,10 +47,25 @@ resource "aws_instance" "mi_servidor2" {
   subnet_id                   = module.vpc.public_subnets[1] # "subnet-0dba02e7cfd16b7a1"
   vpc_security_group_ids      = [module.security-group.security_group_id]
   associate_public_ip_address = true # Publica la IP privada
+  key_name                    = local.nombre_key
   tags = {
     Name        = format("%s-%s", terraform.workspace, count.index) # "${terraform.workspace}-${count.index}"
     Environment = local.Environment
     Owner       = "Dave"
+  }
+  provisioner "remote-exec" {
+    inline = ["echo 'Esperando conexion SSH en ${self.public_ip}'"]
+    connection {
+      type        = "ssh"
+      user        = local.usuario_ssh
+      private_key = file(local.ruta_private_key)
+      host        = self.public_ip
+      timeout     = "5m"
+    }
+  }
+
+  provisioner "local-exec" {
+    command = "ansible-playbook -i ${self.public_ip}, --private-key ${local.ruta_private_key} nginx.yml"
   }
 }
 
