@@ -1,0 +1,12 @@
+- name: Despliegue de servicio SpringBoot
+  hosts: all
+  become: yes
+  remote_user: ubuntu
+  vars:
+    app_name: ejemplo-0.0.1-SNAPSHOT
+    app_user: springuser
+    app_dir: /opt/springboot
+    jar_file: ejemplo-0.0.1-SNAPSHOT.jar
+    service_name: springboot
+  roles:
+    - springboot
