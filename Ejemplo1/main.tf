@@ -3,6 +3,7 @@ provider "aws" {
 }
 
 resource "aws_instance" "web" {
-  ami           = "Amazon Machine Image"
+  ami = "ami-2342faf23a23f4"
   instance_type = "t2.micro"
 }
+

@@ -1,0 +1,30 @@
+ec2-types.pdf
+ec2-ug.pdf
+/Ejemplo2/.env
+
+# ===========================
+# Terraform
+# ===========================
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# ===========================
+# AWS CLI instalador
+# ===========================
+**/aws/
+awscliv2.zip
+
+# ===========================
+# Credenciales (NUNCA en git)
+# ===========================
+*.pem
+*.key
+credentials
