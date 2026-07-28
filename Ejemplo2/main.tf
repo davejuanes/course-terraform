@@ -15,7 +15,7 @@ provider "aws" {
 locals {
   Environment      = "Dev"
   nombre_workspace = terraform.workspace
-  ruta_private_key = "~/Downloads/EjemploAnsible.pem"
+  ruta_private_key = "${path.module}/../EjemploAnsible.pem"
   nombre_key       = "EjemploAnsible"
   usuario_ssh      = "ubuntu"
 }
