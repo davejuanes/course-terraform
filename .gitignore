@@ -1,6 +1,7 @@
 ec2-types.pdf
 ec2-ug.pdf
 /Ejemplo2/.env
+/Ejemplo2/.terraform
 
 # ===========================
 # Terraform
