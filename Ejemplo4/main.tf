@@ -42,6 +42,10 @@ resource "aws_instance" "mi_servidor" {
   }
 
   provisioner "local-exec" {
+    environment = {
+      ANSIBLE_HOST_KEY_CHECKING = "False"
+      ANSIBLE_CONFIG            = "${path.module}/ansible.cfg"
+    }
     command = "ansible-playbook -i ${self.public_ip}, --private-key ${local.ruta_private_key} main.yml"
   }
 }
